@@ -109,125 +109,130 @@ export const SignalPerformanceMetrics: React.FC = () => {
   }, []);
 
   const getQualityColor = (value: number, threshold1: number, threshold2: number) => {
-    if (value >= threshold2) return 'text-green-400';
-    if (value >= threshold1) return 'text-yellow-400';
-    return 'text-red-400';
+    if (value >= threshold2) return 'text-emerald-600';
+    if (value >= threshold1) return 'text-amber-600';
+    return 'text-red-500';
   };
 
   const getQualityBg = (value: number, threshold1: number, threshold2: number) => {
-    if (value >= threshold2) return 'bg-green-500/10 border-green-500/20';
-    if (value >= threshold1) return 'bg-yellow-500/10 border-yellow-500/20';
-    return 'bg-red-500/10 border-red-500/20';
+    if (value >= threshold2) return 'bg-emerald-50 border-emerald-200';
+    if (value >= threshold1) return 'bg-amber-50 border-amber-200';
+    return 'bg-red-50 border-red-200';
   };
 
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 border border-gray-600/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
-        <div className="flex items-center mb-4">
-          <LineChart className="w-5 h-5 text-blue-500 mr-2" />
-          <h3 className="text-lg font-bold text-white">Performance Metrics</h3>
-        </div>
-        <div className="animate-pulse space-y-3">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-16 bg-gray-600 rounded"></div>
-          ))}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <div className="animate-pulse">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-12 h-12 bg-slate-200 rounded-xl"></div>
+            <div>
+              <div className="h-6 w-40 bg-slate-200 rounded mb-2"></div>
+              <div className="h-4 w-56 bg-slate-200 rounded"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-32 bg-slate-200 rounded-xl"></div>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 border border-gray-600/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <div className="bg-indigo-500/20 p-3 rounded-xl">
-            <LineChart className="w-6 h-6 text-indigo-400" />
+          <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg">
+            <LineChart className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">Signal Performance Metrics</h2>
-            <p className="text-gray-400 text-sm">Algorithm efficiency and market analysis</p>
+            <h2 className="text-xl font-bold text-slate-900">Signal Performance Metrics</h2>
+            <p className="text-slate-500 text-sm">Algorithm efficiency and market analysis</p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
-          <span className={`text-sm font-medium ${isConnected ? 'text-green-400' : 'text-red-400'}`}>
-            {isConnected ? 'Live' : 'Disconnected'}
+          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></div>
+          <span className={`text-sm font-medium ${isConnected ? 'text-emerald-600' : 'text-red-600'}`}>
+            {isConnected ? 'Live' : 'Offline'}
           </span>
         </div>
       </div>
 
       {/* Algorithm Performance Comparison */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-6">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-blue-500/20 p-2 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-blue-400" />
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">VWAP Algorithm</h3>
-              <p className="text-gray-400 text-sm">Volume-weighted analysis</p>
+              <h3 className="text-lg font-bold text-slate-900">VWAP Algorithm</h3>
+              <p className="text-slate-600 text-sm">Volume-weighted analysis</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{metrics.algorithm_performance.vwap.total_signals}</div>
-              <div className="text-xs text-gray-400">Total Signals</div>
+              <div className="text-2xl font-bold text-slate-900">{metrics.algorithm_performance.vwap.total_signals}</div>
+              <div className="text-xs text-slate-500">Total Signals</div>
             </div>
             <div className="text-center">
               <div className={`text-2xl font-bold ${getQualityColor(metrics.algorithm_performance.vwap.success_rate, 60, 75)}`}>
                 {metrics.algorithm_performance.vwap.success_rate.toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-400">Success Rate</div>
+              <div className="text-xs text-slate-500">Success Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-blue-400">
+              <div className="text-lg font-bold text-blue-600">
                 {(metrics.algorithm_performance.vwap.avg_confidence * 100).toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-400">Avg Confidence</div>
+              <div className="text-xs text-slate-500">Avg Confidence</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-blue-400">
+              <div className="text-lg font-bold text-blue-600">
                 {metrics.algorithm_performance.vwap.avg_deviation.toFixed(2)}%
               </div>
-              <div className="text-xs text-gray-400">Avg Deviation</div>
+              <div className="text-xs text-slate-500">Avg Deviation</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-6">
+        <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-100 rounded-xl p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-purple-500/20 p-2 rounded-lg">
-              <Target className="w-5 h-5 text-purple-400" />
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Target className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">AMSA Algorithm</h3>
-              <p className="text-gray-400 text-sm">Advanced multi-signal analysis</p>
+              <h3 className="text-lg font-bold text-slate-900">AMSA Algorithm</h3>
+              <p className="text-slate-600 text-sm">Advanced multi-signal analysis</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{metrics.algorithm_performance.amsa.total_signals}</div>
-              <div className="text-xs text-gray-400">Total Signals</div>
+              <div className="text-2xl font-bold text-slate-900">{metrics.algorithm_performance.amsa.total_signals}</div>
+              <div className="text-xs text-slate-500">Total Signals</div>
             </div>
             <div className="text-center">
               <div className={`text-2xl font-bold ${getQualityColor(metrics.algorithm_performance.amsa.success_rate, 60, 75)}`}>
                 {metrics.algorithm_performance.amsa.success_rate.toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-400">Success Rate</div>
+              <div className="text-xs text-slate-500">Success Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-purple-400">
+              <div className="text-lg font-bold text-purple-600">
                 {(metrics.algorithm_performance.amsa.avg_confidence * 100).toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-400">Avg Confidence</div>
+              <div className="text-xs text-slate-500">Avg Confidence</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-purple-400">
+              <div className="text-lg font-bold text-purple-600">
                 {metrics.algorithm_performance.amsa.avg_score.toFixed(1)}
               </div>
-              <div className="text-xs text-gray-400">Quality Score</div>
+              <div className="text-xs text-slate-500">Quality Score</div>
             </div>
           </div>
         </div>
@@ -235,74 +240,74 @@ export const SignalPerformanceMetrics: React.FC = () => {
 
       {/* Signal Quality Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
-          <div className="text-emerald-400 text-sm font-medium">High Confidence</div>
-          <div className="text-2xl font-bold text-white">{metrics.signal_quality.high_confidence_signals}</div>
-          <div className="text-xs text-emerald-300">≥90% confidence</div>
+        <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-4">
+          <div className="text-emerald-600 text-sm font-medium">High Confidence</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.signal_quality.high_confidence_signals}</div>
+          <div className="text-xs text-emerald-500">≥90% confidence</div>
         </div>
-        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
-          <div className="text-yellow-400 text-sm font-medium">Medium Confidence</div>
-          <div className="text-2xl font-bold text-white">{metrics.signal_quality.medium_confidence_signals}</div>
-          <div className="text-xs text-yellow-300">70-89% confidence</div>
+        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
+          <div className="text-amber-600 text-sm font-medium">Medium Confidence</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.signal_quality.medium_confidence_signals}</div>
+          <div className="text-xs text-amber-500">70-89% confidence</div>
         </div>
-        <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4">
-          <div className="text-orange-400 text-sm font-medium">Low Confidence</div>
-          <div className="text-2xl font-bold text-white">{metrics.signal_quality.low_confidence_signals}</div>
-          <div className="text-xs text-orange-300">&lt;70% confidence</div>
+        <div className="bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4">
+          <div className="text-orange-600 text-sm font-medium">Low Confidence</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.signal_quality.low_confidence_signals}</div>
+          <div className="text-xs text-orange-500">&lt;70% confidence</div>
         </div>
-        <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-4">
-          <div className="text-cyan-400 text-sm font-medium">Processing Time</div>
-          <div className="text-2xl font-bold text-white">{metrics.signal_quality.avg_processing_time}s</div>
-          <div className="text-xs text-cyan-300">Average latency</div>
+        <div className="bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-xl p-4">
+          <div className="text-cyan-600 text-sm font-medium">Processing Time</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.signal_quality.avg_processing_time}s</div>
+          <div className="text-xs text-cyan-500">Average latency</div>
         </div>
       </div>
 
       {/* Market Conditions & Performance Trends */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Market Conditions */}
-        <div className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-6">
+        <div className="bg-slate-50 rounded-xl border border-slate-100 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-teal-500/20 p-2 rounded-lg">
-              <BarChart3 className="w-5 h-5 text-teal-400" />
+            <div className="p-2 bg-teal-100 rounded-lg">
+              <BarChart3 className="w-5 h-5 text-teal-600" />
             </div>
-            <h3 className="text-lg font-bold text-white">Market Conditions</h3>
+            <h3 className="text-lg font-bold text-slate-900">Market Conditions</h3>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">Volatility Index</span>
+              <span className="text-slate-600">Volatility Index</span>
               <div className="flex items-center space-x-2">
                 <div className={`w-3 h-3 rounded-full ${
-                  metrics.market_conditions.volatility_index > 20 ? 'bg-red-400' :
-                  metrics.market_conditions.volatility_index > 15 ? 'bg-yellow-400' : 'bg-green-400'
+                  metrics.market_conditions.volatility_index > 20 ? 'bg-red-500' :
+                  metrics.market_conditions.volatility_index > 15 ? 'bg-amber-500' : 'bg-emerald-500'
                 }`}></div>
-                <span className="text-white font-medium">{metrics.market_conditions.volatility_index}%</span>
+                <span className="text-slate-900 font-medium">{metrics.market_conditions.volatility_index}%</span>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">Liquidity Score</span>
+              <span className="text-slate-600">Liquidity Score</span>
               <div className="flex items-center space-x-2">
                 <div className={`w-3 h-3 rounded-full ${
-                  metrics.market_conditions.liquidity_score > 7 ? 'bg-green-400' :
-                  metrics.market_conditions.liquidity_score > 5 ? 'bg-yellow-400' : 'bg-red-400'
+                  metrics.market_conditions.liquidity_score > 7 ? 'bg-emerald-500' :
+                  metrics.market_conditions.liquidity_score > 5 ? 'bg-amber-500' : 'bg-red-500'
                 }`}></div>
-                <span className="text-white font-medium">{metrics.market_conditions.liquidity_score}/10</span>
+                <span className="text-slate-900 font-medium">{metrics.market_conditions.liquidity_score}/10</span>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">Market Conditions</span>
+              <span className="text-slate-600">Market Conditions</span>
               <div className="flex items-center space-x-2">
                 {metrics.market_conditions.optimal_conditions ? (
                   <>
-                    <Award className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400 font-medium">Optimal</span>
+                    <Award className="w-4 h-4 text-emerald-600" />
+                    <span className="text-emerald-600 font-medium">Optimal</span>
                   </>
                 ) : (
                   <>
-                    <Clock className="w-4 h-4 text-yellow-400" />
-                    <span className="text-yellow-400 font-medium">Suboptimal</span>
+                    <Clock className="w-4 h-4 text-amber-600" />
+                    <span className="text-amber-600 font-medium">Suboptimal</span>
                   </>
                 )}
               </div>
@@ -311,29 +316,29 @@ export const SignalPerformanceMetrics: React.FC = () => {
         </div>
 
         {/* Hourly Performance Trends */}
-        <div className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-6">
+        <div className="bg-slate-50 rounded-xl border border-slate-100 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-indigo-500/20 p-2 rounded-lg">
-              <Zap className="w-5 h-5 text-indigo-400" />
+            <div className="p-2 bg-indigo-100 rounded-lg">
+              <Zap className="w-5 h-5 text-indigo-600" />
             </div>
-            <h3 className="text-lg font-bold text-white">Hourly Performance</h3>
+            <h3 className="text-lg font-bold text-slate-900">Hourly Performance</h3>
           </div>
 
           <div className="space-y-3">
             {trendData.slice(0, 5).map((trend, index) => (
-              <div key={trend.hour} className="flex items-center justify-between p-2 bg-gray-700/30 rounded-lg">
+              <div key={trend.hour} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-100">
                 <div className="flex items-center space-x-3">
-                  <span className="text-gray-400 text-sm font-mono">{trend.hour}</span>
+                  <span className="text-slate-500 text-sm font-mono">{trend.hour}</span>
                   <div className="flex items-center space-x-2">
-                    <div className="text-sm text-white font-medium">{trend.signals}</div>
-                    <span className="text-xs text-gray-500">signals</span>
+                    <div className="text-sm text-slate-900 font-medium">{trend.signals}</div>
+                    <span className="text-xs text-slate-500">signals</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className={`text-sm font-medium ${getQualityColor(trend.success_rate, 60, 75)}`}>
                     {trend.success_rate}%
                   </div>
-                  <div className="text-sm text-gray-300">
+                  <div className="text-sm text-slate-600">
                     {(trend.avg_confidence * 100).toFixed(0)}%
                   </div>
                 </div>
@@ -344,13 +349,13 @@ export const SignalPerformanceMetrics: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-6 pt-4 border-t border-gray-700/50">
+      <div className="mt-6 pt-4 border-t border-slate-100">
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center space-x-2 text-gray-400">
+          <div className="flex items-center space-x-2 text-slate-500">
             <Percent className="w-4 h-4" />
             <span>Performance tracking active</span>
           </div>
-          <div className="text-gray-400">
+          <div className="text-slate-500">
             Last updated: {new Date().toLocaleTimeString()}
           </div>
         </div>

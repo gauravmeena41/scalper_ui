@@ -8,7 +8,7 @@ import { SignalPerformanceMetrics } from './components/SignalPerformanceMetrics'
 import { AlertSystem } from './components/AlertSystem';
 import { TradeExecutionAnalytics } from './components/TradeExecutionAnalytics';
 import { tradingApi } from './services/api';
-import { Activity, Wifi, WifiOff } from 'lucide-react';
+import { TrendingUp, Wifi, WifiOff, BarChart3, Clock, Settings } from 'lucide-react';
 
 interface NiftyData {
   price: number;
@@ -28,12 +28,11 @@ interface OptionData {
   timestamp: number;
 }
 
-
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval: 2000, // Refetch every 2 seconds
+      refetchInterval: 2000,
       refetchOnWindowFocus: false,
     },
   },
@@ -70,7 +69,6 @@ function TradingDashboard() {
         setOptionsData(optionsResponse.data.options);
       }
 
-
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -79,88 +77,107 @@ function TradingDashboard() {
     }
   };
 
-  // Fetch data on component mount and set interval
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 2000); // Fetch every 2 seconds
-
+    const interval = setInterval(fetchData, 2000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Header */}
-      <header className="border-b border-gray-700 bg-gray-800/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Modern Header */}
+      <header className="bg-white/80 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Brand */}
             <div className="flex items-center space-x-3">
-              <Activity className="w-8 h-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-white">NIFTY Scalper Terminal</h1>
+              <div className="p-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900">NIFTY Scalper</h1>
+                <p className="text-xs text-slate-500 hidden sm:block">Live Trading Dashboard</p>
+              </div>
             </div>
 
+            {/* Status Indicators */}
             <div className="flex items-center space-x-4">
-              <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm ${
+              {/* Connection Status */}
+              <div className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-medium ${
                 isConnected
-                  ? 'bg-green-500/20 text-green-400'
-                  : 'bg-red-500/20 text-red-400'
+                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                  : 'bg-red-100 text-red-700 border border-red-200'
               }`}>
                 {isConnected ? (
                   <Wifi className="w-4 h-4" />
                 ) : (
                   <WifiOff className="w-4 h-4" />
                 )}
-                <span>{isConnected ? 'Connected' : 'Disconnected'}</span>
+                <span className="hidden md:inline">{isConnected ? 'Live' : 'Disconnected'}</span>
               </div>
 
-              <div className="text-sm text-gray-400">
-                {new Date().toLocaleTimeString()}
+              {/* Time */}
+              <div className="hidden md:flex items-center space-x-2 text-sm text-slate-600">
+                <Clock className="w-4 h-4" />
+                <span>{new Date().toLocaleTimeString()}</span>
               </div>
+
+              {/* Settings */}
+              <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                <Settings className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Top Row - NIFTY Price */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* Top Section - Price Display */}
         <div className="w-full">
           <NiftyPriceDisplay data={niftyData} isLoading={loading} />
         </div>
 
-        {/* Signal Analytics Dashboard */}
-        <div className="w-full">
-          <SignalAnalytics />
+        {/* Dashboard Grid - Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Column */}
+          <div className="space-y-6">
+            <SignalAnalytics />
+            <PnLTracker />
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-6">
+            <SignalPerformanceMetrics />
+            <TradeExecutionAnalytics />
+          </div>
         </div>
 
-        {/* Signal Performance Metrics */}
-        <div className="w-full">
-          <SignalPerformanceMetrics />
-        </div>
-
-        {/* P&L Tracker */}
-        <div className="w-full">
-          <PnLTracker />
-        </div>
-
-        {/* Trade Execution Analytics */}
-        <div className="w-full">
-          <TradeExecutionAnalytics />
-        </div>
-
-        {/* Bottom Row - Options Chain */}
+        {/* Full Width Sections */}
         <div className="w-full">
           <OptionsChain options={optionsData} isLoading={loading} />
         </div>
-
-        {/* Additional Info Footer */}
-        <footer className="mt-8 pt-4 border-t border-gray-700 text-center text-xs text-gray-400">
-          <p>NIFTY 50 Scalping Terminal - Real-time data from Fyers API</p>
-          <p>Connected to: localhost:8502 | Auto-refresh: 2s</p>
-        </footer>
       </main>
 
       {/* Alert System - Fixed Position */}
       <AlertSystem />
+
+      {/* Modern Footer */}
+      <footer className="mt-12 py-6 border-t border-slate-200 bg-white/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500">
+            <div className="flex items-center space-x-2">
+              <BarChart3 className="w-4 h-4" />
+              <span>NIFTY 50 Algorithmic Trading System</span>
+            </div>
+            <div className="mt-2 sm:mt-0 flex items-center space-x-4">
+              <span>API: localhost:8502</span>
+              <span className="hidden sm:inline">•</span>
+              <span>Refresh: 2s</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

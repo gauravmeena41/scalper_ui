@@ -136,17 +136,17 @@ export const AlertSystem: React.FC = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'CRITICAL': return 'border-red-500 bg-red-500/10 text-red-400';
-      case 'HIGH': return 'border-orange-500 bg-orange-500/10 text-orange-400';
-      case 'MEDIUM': return 'border-yellow-500 bg-yellow-500/10 text-yellow-400';
-      default: return 'border-blue-500 bg-blue-500/10 text-blue-400';
+      case 'CRITICAL': return 'border-red-200 bg-red-50 text-red-700';
+      case 'HIGH': return 'border-orange-200 bg-orange-50 text-orange-700';
+      case 'MEDIUM': return 'border-amber-200 bg-amber-50 text-amber-700';
+      default: return 'border-blue-200 bg-blue-50 text-blue-700';
     }
   };
 
   const getSignalIcon = (signalType: string) => {
     return signalType === 'BUY' ?
-      <TrendingUp className="w-4 h-4 text-green-400" /> :
-      <TrendingDown className="w-4 h-4 text-red-400" />;
+      <TrendingUp className="w-4 h-4 text-emerald-600" /> :
+      <TrendingDown className="w-4 h-4 text-red-500" />;
   };
 
   return (
@@ -161,10 +161,10 @@ export const AlertSystem: React.FC = () => {
         <div className="relative">
           <button
             onClick={() => setShowAlerts(!showAlerts)}
-            className={`p-3 rounded-full border transition-all duration-200 ${
+            className={`p-3 rounded-full border transition-all duration-200 shadow-lg ${
               unreadCount > 0
-                ? 'bg-red-500/20 border-red-500/50 text-red-400 animate-pulse'
-                : 'bg-gray-800/80 border-gray-600/50 text-gray-400 hover:text-white'
+                ? 'bg-red-100 border-red-300 text-red-600 animate-pulse'
+                : 'bg-white border-slate-300 text-slate-600 hover:text-slate-900'
             }`}
           >
             {unreadCount > 0 ? <BellRing className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
@@ -180,23 +180,23 @@ export const AlertSystem: React.FC = () => {
 
       {/* Alert Panel */}
       {showAlerts && (
-        <div className="fixed top-16 right-4 w-96 max-h-96 bg-gray-900/95 border border-gray-600/50 rounded-xl shadow-2xl backdrop-blur-sm z-40 overflow-hidden">
+        <div className="fixed top-16 right-4 w-96 max-h-96 bg-white border border-slate-200 rounded-xl shadow-2xl z-40 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
+          <div className="flex items-center justify-between p-4 border-b border-slate-200">
             <div className="flex items-center space-x-2">
-              <AlertTriangle className="w-5 h-5 text-orange-400" />
-              <h3 className="text-lg font-bold text-white">Signal Alerts</h3>
+              <AlertTriangle className="w-5 h-5 text-amber-600" />
+              <h3 className="text-lg font-bold text-slate-900">Signal Alerts</h3>
             </div>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setShowSettings(!showSettings)}
-                className="p-1 text-gray-400 hover:text-white transition-colors"
+                className="p-1 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <Settings className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setShowAlerts(false)}
-                className="p-1 text-gray-400 hover:text-white transition-colors"
+                className="p-1 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -205,10 +205,10 @@ export const AlertSystem: React.FC = () => {
 
           {/* Settings Panel */}
           {showSettings && (
-            <div className="p-4 bg-gray-800/50 border-b border-gray-700/50">
+            <div className="p-4 bg-slate-50 border-b border-slate-200">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">Enable Alerts</span>
+                  <span className="text-sm text-slate-600">Enable Alerts</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -216,22 +216,22 @@ export const AlertSystem: React.FC = () => {
                       onChange={(e) => setSettings(prev => ({ ...prev, enabled: e.target.checked }))}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">Sound Alerts</span>
+                  <span className="text-sm text-slate-600">Sound Alerts</span>
                   <button
                     onClick={() => setSettings(prev => ({ ...prev, sound_enabled: !prev.sound_enabled }))}
-                    className={`p-1 rounded ${settings.sound_enabled ? 'text-blue-400' : 'text-gray-500'}`}
+                    className={`p-1 rounded ${settings.sound_enabled ? 'text-blue-600' : 'text-slate-400'}`}
                   >
                     {settings.sound_enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                   </button>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Min Confidence: {(settings.min_confidence * 100).toFixed(0)}%</label>
+                  <label className="text-sm text-slate-600">Min Confidence: {(settings.min_confidence * 100).toFixed(0)}%</label>
                   <input
                     type="range"
                     min="0.5"
@@ -239,7 +239,7 @@ export const AlertSystem: React.FC = () => {
                     step="0.05"
                     value={settings.min_confidence}
                     onChange={(e) => setSettings(prev => ({ ...prev, min_confidence: parseFloat(e.target.value) }))}
-                    className="w-full mt-1 accent-blue-500"
+                    className="w-full mt-1 accent-blue-600"
                   />
                 </div>
               </div>
@@ -250,9 +250,9 @@ export const AlertSystem: React.FC = () => {
           <div className="max-h-64 overflow-y-auto">
             {alerts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8">
-                <Bell className="w-8 h-8 text-gray-500 mb-2" />
-                <p className="text-gray-400 text-sm">No alerts yet</p>
-                <p className="text-gray-500 text-xs">High-confidence signals will appear here</p>
+                <Bell className="w-8 h-8 text-slate-300 mb-2" />
+                <p className="text-slate-600 text-sm">No alerts yet</p>
+                <p className="text-slate-500 text-xs">High-confidence signals will appear here</p>
               </div>
             ) : (
               <div className="space-y-2 p-2">
@@ -296,10 +296,10 @@ export const AlertSystem: React.FC = () => {
 
           {/* Footer */}
           {alerts.length > 0 && (
-            <div className="p-3 border-t border-gray-700/50 bg-gray-800/50">
+            <div className="p-3 border-t border-slate-200 bg-slate-50">
               <button
                 onClick={clearAllAlerts}
-                className="w-full text-xs text-gray-400 hover:text-white transition-colors"
+                className="w-full text-xs text-slate-500 hover:text-slate-900 transition-colors"
               >
                 Clear All Alerts
               </button>
