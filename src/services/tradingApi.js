@@ -95,6 +95,159 @@ export const tradingApi = {
       console.error('Health check failed:', error)
       return { status: 'error', message: error.message }
     }
+  },
+
+  // Paper Trading endpoints
+  getPaperTradingStatus: async () => {
+    try {
+      const response = await api.get('/paper-trading/status')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching paper trading status:', error)
+      throw error
+    }
+  },
+
+  startPaperTrading: async () => {
+    try {
+      const response = await api.post('/paper-trading/start')
+      return response.data
+    } catch (error) {
+      console.error('Error starting paper trading:', error)
+      throw error
+    }
+  },
+
+  stopPaperTrading: async () => {
+    try {
+      const response = await api.post('/paper-trading/stop')
+      return response.data
+    } catch (error) {
+      console.error('Error stopping paper trading:', error)
+      throw error
+    }
+  },
+
+  resetPaperTrading: async () => {
+    try {
+      const response = await api.post('/paper-trading/reset')
+      return response.data
+    } catch (error) {
+      console.error('Error resetting paper trading:', error)
+      throw error
+    }
+  },
+
+  getPaperPortfolio: async () => {
+    try {
+      const response = await api.get('/paper-trading/portfolio')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching paper portfolio:', error)
+      throw error
+    }
+  },
+
+  getActiveTrades: async () => {
+    try {
+      const response = await api.get('/paper-trading/active-trades')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching active trades:', error)
+      throw error
+    }
+  },
+
+  getTradeHistory: async (limit = 50) => {
+    try {
+      const response = await api.get(`/paper-trading/trade-history?limit=${limit}`)
+      return response.data
+    } catch (error) {
+      console.error('Error fetching trade history:', error)
+      throw error
+    }
+  },
+
+  // Analytics endpoints
+  getTradeAnalytics: async () => {
+    try {
+      const response = await api.get('/analytics/comprehensive')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching trade analytics:', error)
+      throw error
+    }
+  },
+
+  getPerformanceMetrics: async () => {
+    try {
+      const response = await api.get('/analytics/performance')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching performance metrics:', error)
+      throw error
+    }
+  },
+
+  getSignalAnalytics: async () => {
+    try {
+      const response = await api.get('/analytics/signals')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching signal analytics:', error)
+      throw error
+    }
+  },
+
+  getRealtimeAnalytics: async () => {
+    try {
+      const response = await api.get('/analytics/realtime')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching realtime analytics:', error)
+      throw error
+    }
+  },
+
+  getTradeTimeline: async () => {
+    try {
+      const response = await api.get('/analytics/trade-timeline')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching trade timeline:', error)
+      throw error
+    }
+  },
+
+  getRiskAnalytics: async () => {
+    try {
+      const response = await api.get('/analytics/risk')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching risk analytics:', error)
+      throw error
+    }
+  },
+
+  getHourlyAnalytics: async () => {
+    try {
+      const response = await api.get('/analytics/hourly')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching hourly analytics:', error)
+      throw error
+    }
+  },
+
+  // Live signals
+  getLiveSignals: async () => {
+    try {
+      const response = await api.get('/live-signals')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching live signals:', error)
+      throw error
+    }
   }
 }
 

@@ -4,6 +4,9 @@ import { PortfolioStats } from './components/trading/PortfolioStats'
 import { SignalCard } from './components/trading/SignalCard'
 import { SystemStatus } from './components/trading/SystemStatus'
 import { TopMovers } from './components/trading/TopMovers'
+import { PaperTradingPanel } from './components/trading/PaperTradingPanel'
+import { ActiveTrades } from './components/trading/ActiveTrades'
+import { TradeAnalytics } from './components/trading/TradeAnalytics'
 import { useSystemStore } from './stores/systemStore'
 import { useMarketStore } from './stores/marketStore'
 import { AlertCircle, Wifi, WifiOff } from 'lucide-react'
@@ -90,8 +93,17 @@ function App() {
             {/* Signals Card */}
             <SignalCard />
 
+            {/* Paper Trading Panel */}
+            <PaperTradingPanel />
+
             {/* Top Movers */}
             <TopMovers />
+
+            {/* Active Trades */}
+            <ActiveTrades />
+
+            {/* Trade Analytics */}
+            <TradeAnalytics />
           </div>
 
           {/* Right Column - System Status */}

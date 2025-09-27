@@ -50,18 +50,38 @@ export const useSystemStore = create(
       lastError: null,
 
       // Actions
-      updateSystemStatus: (data) => set({
-        tradingActive: data.trading_active || false,
-        marketStatus: data.market_status || 'CLOSED',
-        connectionStatus: data.connection_status || 'DISCONNECTED',
-        lastUpdate: new Date().toISOString(),
-        components: data.components || get().components,
-        dataMetrics: {
-          ...get().dataMetrics,
-          dataPoints5Min: data.data_points_5min || 0,
-          ...data.metrics
+      updateSystemStatus: (data) => {
+        // Transform backend component format to frontend format
+        const transformedComponents = {}
+        if (data.components) {
+          Object.keys(data.components).forEach(key => {
+            const status = data.components[key]
+            if (typeof status === 'string') {
+              // Backend returns strings like "running", "stopped"
+              transformedComponents[key] = {
+                running: status === 'running',
+                healthy: status === 'running' // Assume healthy if running
+              }
+            } else if (typeof status === 'object') {
+              // Backend returns objects (keep as-is)
+              transformedComponents[key] = status
+            }
+          })
         }
-      }),
+
+        set({
+          tradingActive: data.trading_active || false,
+          marketStatus: data.market_status || 'CLOSED',
+          connectionStatus: data.status === 'healthy' ? 'CONNECTED' : 'DISCONNECTED',
+          lastUpdate: new Date().toISOString(),
+          components: Object.keys(transformedComponents).length > 0 ? transformedComponents : get().components,
+          dataMetrics: {
+            ...get().dataMetrics,
+            dataPoints5Min: data.data_points_5min || 0,
+            ...data.metrics
+          }
+        })
+      },
 
       setConnectionStatus: (status) => set({
         connectionStatus: status,

@@ -98,35 +98,24 @@ export const SystemStatus = () => {
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-gray-300">Components</h4>
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                {getStatusIcon(components.api_server?.healthy, components.api_server?.running)}
-                <span className="text-sm text-white">API Server</span>
-              </div>
-              <Badge variant={components.api_server?.healthy ? 'success' : 'error'} size="xs">
-                {components.api_server?.running ? 'Running' : 'Stopped'}
-              </Badge>
-            </div>
+            {Object.entries(components).map(([componentName, componentStatus]) => {
+              const displayName = componentName
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                {getStatusIcon(components.signal_monitor?.healthy, components.signal_monitor?.running)}
-                <span className="text-sm text-white">Signal Monitor</span>
-              </div>
-              <Badge variant={components.signal_monitor?.healthy ? 'success' : 'error'} size="xs">
-                {components.signal_monitor?.running ? 'Running' : 'Stopped'}
-              </Badge>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                {getStatusIcon(components.realtime_data?.healthy, components.realtime_data?.running)}
-                <span className="text-sm text-white">Real-time Data</span>
-              </div>
-              <Badge variant={components.realtime_data?.healthy ? 'success' : 'error'} size="xs">
-                {components.realtime_data?.running ? 'Running' : 'Stopped'}
-              </Badge>
-            </div>
+              return (
+                <div key={componentName} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    {getStatusIcon(componentStatus?.healthy, componentStatus?.running)}
+                    <span className="text-sm text-white">{displayName}</span>
+                  </div>
+                  <Badge variant={componentStatus?.healthy ? 'success' : 'error'} size="xs">
+                    {componentStatus?.running ? 'Running' : 'Stopped'}
+                  </Badge>
+                </div>
+              )
+            })}
           </div>
         </div>
 
